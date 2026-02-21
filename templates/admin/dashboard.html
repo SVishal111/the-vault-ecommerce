@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="mb-4">Admin Dashboard</h2>
+
+<div class="row g-4">
+
+    <!-- Stats Cards -->
+    <div class="col-md-3">
+        <div class="card text-white bg-primary shadow">
+            <div class="card-body">
+                <h5>Total Users</h5>
+                <h3>{{ total_users }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-success shadow">
+            <div class="card-body">
+                <h5>Total Products</h5>
+                <h3>{{ total_products }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-warning shadow">
+            <div class="card-body">
+                <h5>Total Orders</h5>
+                <h3>{{ total_orders }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-danger shadow">
+            <div class="card-body">
+                <h5>Total Revenue</h5>
+                <h3>₹ {{ total_revenue }}</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- Recent Orders -->
+<h4>Recent Orders</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Status</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in recent_orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.user.username }}</td>
+            <td>{{ order.status }}</td>
+            <td>₹ {{ order.total_price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<hr class="my-5">
+
+<!-- Recent Users -->
+<h4>Recent Users</h4>
+<ul class="list-group">
+    {% for user in recent_users %}
+    <li class="list-group-item">
+        {{ user.username }} — Joined: {{ user.date_joined }}
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
