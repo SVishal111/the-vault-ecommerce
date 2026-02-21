@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Manage Products</h2>
+
+<a href="{% url 'admin_product_create' %}" class="btn btn-primary mb-3">
+    + Add Product
+</a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Available</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" width="60">
+                {% endif %}
+            </td>
+            <td>{{ product.name }}</td>
+            <td>₹ {{ product.price }}</td>
+            <td>{{ product.stock }}</td>
+            <td>{{ product.is_available }}</td>
+            <td>
+                <a href="{% url 'admin_product_update' product.id %}" class="btn btn-warning btn-sm">Edit</a>
+                
+                <form method="POST" action="{% url 'admin_product_delete' product.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
