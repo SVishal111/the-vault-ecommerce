@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from store.models import Product, Cart, CartItem
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
-@login_required
+@login_required(login_url='login')
 def cart_view(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
     items = cart.items.all()
@@ -19,8 +21,11 @@ def cart_view(request):
     })
 
 
-@login_required
+
 def add_to_cart(request, product_id):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Login first to add items to cart.")
+        return redirect(f'/accounts/login/?next=/cart/add/{id}/')
     product = get_object_or_404(Product, id=product_id)
 
     cart, created = Cart.objects.get_or_create(user=request.user)
